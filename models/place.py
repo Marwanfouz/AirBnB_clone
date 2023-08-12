@@ -3,6 +3,7 @@
 
 from models.base_model import BaseModel
 
+
 class Place:
     city_id = ""
     user_id = ""
@@ -15,5 +16,3 @@ class Place:
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
-
-
