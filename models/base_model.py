@@ -4,7 +4,6 @@
 import uuid
 from datetime import datetime
 import models
-""" add by mr-You import variables storage  task 5"""
 
 
 class BaseModel:
@@ -27,7 +26,6 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            """ add by mr-You task 5"""
             models.storage.new(self)
 
     def __str__(self):
@@ -38,7 +36,6 @@ class BaseModel:
     def save(self):
         """Update updated_at with the current datetime."""
         self.updated_at = datetime.now()
-        """ add by mr-You task 5"""
         models.storage.save()
 
     def to_dict(self):
