@@ -31,12 +31,12 @@ class FileStorage:
 
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
-        obj_dict = {}
+        obj_of_dict = {}
 
         for key, obj in self.__objects.items():
-            obj_dict[key] = obj.to_dict()
+            obj_of_dict[key] = obj.to_dict()
         with open(self.__file_path, 'w') as f:
-            json.dump(obj_dict, f)
+            json.dump(obj_of_dict, f)
 
         """add by mr-You task 5 """
     def reload(self):
@@ -47,8 +47,8 @@ class FileStorage:
         """
         try:
             with open(self.__file_path, 'r') as f:
-                new_obj_dict = json.load(f)
-            for value in new_obj_dict.values():
+                new_obj_of_dict = json.load(f)
+            for value in new_obj_of_dict.values():
                 class_Name = value["__class__"]
                 self.new(eval(class_Name)(**value))
         except FileNotFoundError:
