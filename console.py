@@ -147,15 +147,15 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representation of all instances based
         or not on the class name. Ex: $ all BaseModel or $ all
         """
-        argl = parse(arg)
-        if len(argl) > 0 and argl[0] not in HBNBCommand.classes:
+        argm = parse(arg)
+        if len(argm) > 0 and argm[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         else:
             objl = []
             for obj in storage.all().values():
-                if len(argl) > 0 and argl[0] == obj.__class__.__name__:
+                if len(argm) > 0 and argm[0] == obj.__class__.__name__:
                     objl.append(obj.__str__())
-                elif len(argl) == 0:
+                elif len(argm) == 0:
                     objl.append(obj.__str__())
             print(objl)
 
@@ -166,27 +166,27 @@ class HBNBCommand(cmd.Cmd):
         (save the change into the JSON file).
         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com
         """
-        argl = parse(arg)
+        argm = parse(arg)
         objdict = storage.all()
 
-        if len(argl) == 0:
+        if len(argm) == 0:
             print("** class name missing **")
             return False
-        if argl[0] not in HBNBCommand.classes:
+        if argm[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return False
-        if len(argl) == 1:
+        if len(argm) == 1:
             print("** instance id missing **")
             return False
-        if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
+        if "{}.{}".format(argm[0], argm[1]) not in objdict.keys():
             print("** no instance found **")
             return False
-        if len(argl) == 2:
+        if len(argm) == 2:
             print("** attribute name missing **")
             return False
-        if len(argl) == 3:
+        if len(argm) == 3:
             try:
-                type(eval(argl[2])) != dict
+                type(eval(argm[2])) != dict
             except NameError:
                 print("** value missing **")
                 return False
