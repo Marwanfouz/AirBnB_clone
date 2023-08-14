@@ -15,6 +15,7 @@ from models.base_model import BaseModel
 from models.user import User
 from models import storage
 
+
 def parse(arg):
     curly_braces = re.search(r"\{(.*?)\}", arg)
     print(curly_braces)
@@ -37,6 +38,7 @@ def parse(arg):
         retl.append(curly_braces.group())
         print(retl)
         return retl
+
 
 class HBNBCommand(cmd.Cmd):
     """Define HBNB console"""
@@ -68,8 +70,8 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """
         Usage: create <class>
-        Create a new class instance and print its id 
-        and 
+        Create a new class instance and print its id
+        and
         """
         if len(arg) == 0:
             print("** class name missing **")
@@ -84,9 +86,13 @@ class HBNBCommand(cmd.Cmd):
                     print(new_li.id)
                 else:
                     print("** class doesn't exist **")
-    def do_show(self,arg):
-        """Prints the string representation of an instance based on the class name and id.
-        Ex: $ show BaseModel 1234-1234-1234"""
+
+    def do_show(self, arg):
+        """
+        Prints the string representation of an instance
+        based on the class name and id.
+        Ex: $ show BaseModel 1234-1234-1234
+        """
         if len(arg) == 0:
             print("** class name missing **")
             return
@@ -106,8 +112,85 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
 
+    def do_destroy(self, arg):
+        """
+        Deletes an instance based on the class name and id
+        (save the change into the JSON file).
+        Ex: $ destroy BaseModel 1234-1234-1234
+        """
+        if len(arg) == 0 or arg.split(" ")[0] == "":
+            print("** class name missing **")
+            return
+        arg_list = arg.split(" ")
+        try:
+            obj = eval(arg_list[0])
+        except Exception:
+            print("** class doesn't exist **")
+            return
+        if len(arg_list) == 1:
+            print('** instance id missing **')
+            return
+        if len(arg_list) > 1:
+            key = arg_list[0] + '.' + arg_list[1]
+            if arg_list[1] == "":
+                print('** instance id missing **')
+                return
+            if key in storage.all():
+                storage.all().pop(key)
+                storage.save()
+            else:
+                print('** no instance found **')
+                return
+
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances based
+        or not on the class name. Ex: $ all BaseModel or $ all
+        """
+        argl = parse(arg)
+        if len(argl) > 0 and argl[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+        else:
+            objl = []
+            for obj in storage.all().values():
+                if len(argl) > 0 and argl[0] == obj.__class__.__name__:
+                    objl.append(obj.__str__())
+                elif len(argl) == 0:
+                    objl.append(obj.__str__())
+            print(objl)
+
+    def do_update(self, arg):
+        """
+        Updates an instance based on the class name and
+        id by adding or updating attribute
+        (save the change into the JSON file).
+        Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com
+        """
+        argl = parse(arg)
+        objdict = storage.all()
+
+        if len(argl) == 0:
+            print("** class name missing **")
+            return False
+        if argl[0] not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return False
+        if len(argl) == 1:
+            print("** instance id missing **")
+            return False
+        if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
+            print("** no instance found **")
+            return False
+        if len(argl) == 2:
+            print("** attribute name missing **")
+            return False
+        if len(argl) == 3:
+            try:
+                type(eval(argl[2])) != dict
+            except NameError:
+                print("** value missing **")
+                return False
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
-
-
