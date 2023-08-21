@@ -1,0 +1,20 @@
+/*for header style*/
+header {
+    background-color: #fff;
+    height: 70px;
+    width: 100%;
+    color: white;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.logo {
+    background-image: url(../images/logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 150px;
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    color: white;
+    font-size: 20px;
+}
